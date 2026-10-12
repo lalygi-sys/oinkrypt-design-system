@@ -1,0 +1,199 @@
+/**
+ * Design System — Color tokens
+ *
+ * Implements DESIGN_SYSTEM.md §2.1 (primitives) and §3 (semantics), v0.1.6.
+ * Two layers only, no more:
+ *   1. Primitives (--ds-blue-*, --ds-neutral-*) — raw color, no meaning.
+ *   2. Semantics (--ds-surface-*, --ds-content-*, --ds-border-*, --ds-action-*,
+ *      --ds-interaction-*, --ds-status-*) — what a color MEANS in the product.
+ *      Every semantic token references a primitive wherever one exists.
+ *
+ * Status (critical/high/medium/low/info/success) and action.destructive/
+ * .warning have no backing primitive scale on purpose — DESIGN_SYSTEM.md §3
+ * explicitly rejected building a full tonal ramp per status color ("only
+ * where useful"). As of v0.1.4 each status is four explicit, independently-
+ * authored hex values (solid-bg/-fg, subtle-bg/-fg) rather than one anchor
+ * mechanically alpha-derived into two — see the status block below for why.
+ * action.warning (v0.1.6) follows action.destructive's own pattern exactly:
+ * an action.* role built by reference on top of the matching status.*
+ * solid-bg, not a second copy of it — components consume action.warning,
+ * never status.high directly.
+ *
+ * This file is additive only: every custom property is prefixed --ds- and
+ * does not touch, rename, or remove anything in ../../css/hru.css.
+ */
+
+:root {
+  /* ---- Primitive: Blue (brand/interaction) — anchor --ds-blue-500 = #4C7DFF, fixed. Every other step is PROPOSED per DESIGN_SYSTEM.md §2.1.1. ---- */
+  --ds-blue-50: #E7EDFD;
+  --ds-blue-100: #CFDBFC;
+  --ds-blue-200: #A6BEFC;
+  --ds-blue-300: #7CA0FD;
+  --ds-blue-400: #5E8AFF;
+  --ds-blue-500: #4C7DFF; /* anchor — do not change without a new decision round */
+  --ds-blue-600: #215EFF;
+  --ds-blue-700: #0445F4;
+  --ds-blue-800: #0A3CBF;
+  --ds-blue-900: #0E308B;
+  --ds-blue-950: #102459;
+
+  /* ---- Primitive: Neutral (graphite) — genuinely neutral (R=G=B) throughout, per §2.1.2 ---- */
+  --ds-neutral-950: #171717;
+  --ds-neutral-900: #1C1C1C;
+  --ds-neutral-850: #222222;
+  --ds-neutral-800: #292929;
+  --ds-neutral-750: #2F2F2F;
+  --ds-neutral-700: #383838;
+  --ds-neutral-650: #454545;
+  --ds-neutral-600: #525252;
+  --ds-neutral-500: #6B6B6B;
+  --ds-neutral-400: #8C8C8C;
+  --ds-neutral-300: #A8A8A8;
+  --ds-neutral-200: #C7C7C7;
+  --ds-neutral-100: #E2E2E2;
+  --ds-neutral-50: #F3F3F3;
+
+  --ds-white: #FFFFFF;
+
+  /* ============================================================
+     Semantic: surface
+     ============================================================ */
+  --ds-surface-base: var(--ds-neutral-950);
+  --ds-surface-subtle: var(--ds-neutral-900);
+  --ds-surface-container: var(--ds-neutral-850);
+  --ds-surface-elevated: var(--ds-neutral-750);
+  --ds-surface-overlay: color-mix(in srgb, var(--ds-neutral-950) 72%, transparent);
+
+  /* ============================================================
+     Semantic: content
+     ============================================================ */
+  --ds-content-primary: var(--ds-neutral-50);
+  --ds-content-secondary: var(--ds-neutral-200);
+  --ds-content-muted: var(--ds-neutral-400);
+  --ds-content-disabled: var(--ds-neutral-500);
+  --ds-content-inverse: var(--ds-white);
+
+  /* ============================================================
+     Semantic: border
+     ============================================================ */
+  --ds-border-subtle: var(--ds-neutral-700);
+  --ds-border-default: var(--ds-neutral-650);
+  --ds-border-strong: var(--ds-neutral-600);
+  --ds-border-focus: color-mix(in srgb, var(--ds-blue-500) 24%, transparent);
+
+  /* ============================================================
+     Semantic: action
+     action.secondary is deliberately NOT a color token — DESIGN_SYSTEM.md
+     §3 defines it as a composite of tokens that already exist:
+       background → transparent, or --ds-surface-container/--ds-surface-elevated
+       border     → --ds-border-default (only variants that show one)
+       label/icon → --ds-content-primary
+       hover      → --ds-interaction-hover
+     A component consumes those four directly; inventing a fifth
+     --ds-action-secondary-* value here would duplicate them for nothing.
+     ============================================================ */
+  --ds-action-primary: var(--ds-blue-500);
+  --ds-action-primary-hover: var(--ds-blue-400); /* PROPOSED — lighter, "lifting" on a dark canvas; open to visual tuning */
+  --ds-action-primary-pressed: var(--ds-blue-600); /* PROPOSED — darker, "pushed in"; open to visual tuning */
+  /* --ds-action-destructive* is declared after the status block below —
+     it references --ds-status-critical-solid-bg, so it needs that token
+     to exist first for the file to read top-to-bottom in dependency order. */
+
+  /* ============================================================
+     Semantic: interaction
+     Resolves --raised's old dual-role bug (audit §8-#7): its hover/
+     selected job lives here now, cleanly separated from --ds-surface-elevated.
+     ============================================================ */
+  --ds-interaction-hover: color-mix(in srgb, var(--ds-blue-500) 10%, transparent); /* PROPOSED */
+  --ds-interaction-selected: color-mix(in srgb, var(--ds-blue-500) 24%, transparent); /* PROPOSED */
+  --ds-interaction-selected-subtle: color-mix(in srgb, var(--ds-blue-500) 16%, transparent); /* PROPOSED */
+  --ds-interaction-focus: var(--ds-border-focus);
+
+  /* ============================================================
+     Semantic: status — v0.1.4 revision.
+     Two independently-authored presentation modes per status, not one
+     value mechanically alpha-derived into two — the prior color-mix()
+     approach made every "solid" tag read as pastel (worst on Low) because
+     solid-bg and subtle-bg were forced to be the exact same hue+lightness,
+     just at different opacity. Each status now gets four explicit roles:
+     solid-bg / solid-fg / subtle-bg / subtle-fg.
+     subtle-fg reuses the PRIOR round's solid values verbatim (#E05D68 etc.)
+     — those were already well-tuned as *text on a dark tint*, just too
+     weak as a *fill with white text*, so they move down a tier rather
+     than being re-invented. subtle-bg reuses this app's own pre-DS
+     --c-*-bg hex from hru.css (dark, desaturated tints already proven to
+     sit well on this canvas), plus one new value in the same family for
+     success (no pre-existing equivalent). solid-bg/-fg are the only
+     genuinely new hex in this block, chosen and check for stronger
+     contrast (see DESIGN_SYSTEM.md §3 for the exact ratios). Brand blue
+     is not involved anywhere in this block, per instruction.
+     status.* still has no -hover/-pressed: these are informational labels
+     (badges/tags), not interactive controls.
+     ============================================================ */
+  --ds-status-critical-solid-bg: #C94C58;
+  --ds-status-critical-solid-fg: var(--ds-white);
+  --ds-status-critical-subtle-bg: #541717;
+  --ds-status-critical-subtle-fg: #E05D68;
+
+  --ds-status-high-solid-bg: #A86232;
+  --ds-status-high-solid-fg: var(--ds-white);
+  --ds-status-high-subtle-bg: #4C3D2A;
+  --ds-status-high-subtle-fg: #E38B52;
+
+  --ds-status-medium-solid-bg: #D0AD4A;
+  --ds-status-medium-solid-fg: var(--ds-surface-base); /* dark text — better contrast than white on this lighter gold */
+  --ds-status-medium-subtle-bg: #664E2E;
+  --ds-status-medium-subtle-fg: #D7B85A;
+
+  --ds-status-low-solid-bg: #4A73BC;
+  --ds-status-low-solid-fg: var(--ds-white);
+  --ds-status-low-subtle-bg: #232E61;
+  --ds-status-low-subtle-fg: #7A9BC5;
+
+  --ds-status-info-solid-bg: #666A72;
+  --ds-status-info-solid-fg: var(--ds-white);
+  --ds-status-info-subtle-bg: #252429;
+  --ds-status-info-subtle-fg: var(--ds-neutral-400); /* still equals content.muted by design */
+
+  --ds-status-success-solid-bg: #2F8F61;
+  --ds-status-success-solid-fg: var(--ds-white);
+  --ds-status-success-subtle-bg: #193829;
+  --ds-status-success-subtle-fg: #4DAA78;
+
+  /* action.destructive: same red as status.critical's solid-bg, by
+     reference — see the comment on --ds-action-primary above. */
+  --ds-action-destructive: var(--ds-status-critical-solid-bg);
+  --ds-action-destructive-hover: #D26B75; /* PROPOSED */
+  --ds-action-destructive-pressed: #B53743; /* PROPOSED */
+
+  /* action.warning: v0.1.6 — same orange as status.high's solid-bg, by
+     reference, mirroring action.destructive's relationship to
+     status.critical exactly. Represents a high-consequence/caution
+     action that is NOT destructive (nothing is deleted/undone) — e.g. an
+     active verification probe against a live target. Not status.high
+     itself: components never consume status.* directly (§3), only the
+     action.* role built on top of it. -hover/-pressed computed by
+     applying status.critical's own hover/pressed lightness deltas
+     (+/-8% L, same hue/saturation) to this anchor, for the same
+     "lighter on hover, darker when pressed" relationship every other
+     action.* pair already uses. */
+  --ds-action-warning: var(--ds-status-high-solid-bg);
+  --ds-action-warning-hover: #C5743D; /* PROPOSED */
+  --ds-action-warning-pressed: #885029; /* PROPOSED */
+}
+
+/**
+ * Proposed future mapping — Quasar theme (frontend/quasar.variables.scss) → DS.
+ * Documented only, per DESIGN_SYSTEM.md §7. NOT applied. Changing Quasar's
+ * $primary/$dark/etc. is a global, risky migration out of scope for this step.
+ *
+ *   $primary   (#3d74ff) → --ds-action-primary   (#4C7DFF)
+ *   $dark      (#313135) → --ds-surface-elevated (#2F2F2F)
+ *   $dark-page (#171717) → --ds-surface-base     (#171717)  (already equal)
+ *   $positive  (#166f4a) → --ds-status-success    (#4DAA78)
+ *   $negative  (#b72424) → --ds-status-critical-solid-bg / --ds-action-destructive (now formally the same value, #C94C58 — see §3)
+ *   $info      (#3d74ff) → --ds-status-info-solid-bg (#666A72) (was == $primary; DS deliberately separates these)
+ *   $warning   (#976626) → --ds-status-high-solid-bg or --ds-status-medium-solid-bg (unclear which; not decided)
+ *   $secondary (#ffffff) → removed as a DS concept, no mapping (§7)
+ *   $accent    (#2590b1) → no DS role; cyan is migration debt (§7)
+ */

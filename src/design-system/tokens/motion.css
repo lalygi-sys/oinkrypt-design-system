@@ -1,0 +1,11 @@
+/**
+ * Design System — Motion tokens
+ *
+ * Intentionally empty. DESIGN_SYSTEM.md does not specify any motion/
+ * animation values (durations, easing curves, etc.) as of v0.1.3 — the
+ * audit found essentially no motion system in the current app to extract
+ * from either. Rather than invent duration/easing values with no spec or
+ * usage evidence behind them, this file is a structural placeholder: the
+ * import exists in tokens/index.css so a future decision round has
+ * somewhere to land without changing the token file layout.
+ */

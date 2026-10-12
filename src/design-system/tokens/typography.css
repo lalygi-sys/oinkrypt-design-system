@@ -1,0 +1,41 @@
+/**
+ * Design System — Typography tokens
+ *
+ * Implements DESIGN_SYSTEM.md §2.3 / §4 (finalized scale, v0.1.3).
+ * Inter stays the product UI font. The existing monospace stack is
+ * exposed as --ds-font-mono unchanged (no new font chosen — one was
+ * already established in hru.css's --font-mono).
+ *
+ * Nine role classes are provided (one per documented style) plus one
+ * .ds-font-mono modifier — the "layer mono on top of any size role"
+ * pattern DESIGN_SYSTEM.md §2.3 describes. That's the full set; no
+ * additional utility classes (italics, truncation, etc.) are created
+ * here without a demonstrated need.
+ */
+
+:root {
+  --ds-font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  --ds-font-mono: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+
+  --ds-heading-01-size: 28px;   --ds-heading-01-line-height: 36px; --ds-heading-01-weight: 600;
+  --ds-heading-02-size: 20px;   --ds-heading-02-line-height: 28px; --ds-heading-02-weight: 600;
+  --ds-heading-03-size: 16px;   --ds-heading-03-line-height: 24px; --ds-heading-03-weight: 600;
+  --ds-body-01-size: 14px;      --ds-body-01-line-height: 20px;    --ds-body-01-weight: 400;
+  --ds-body-01-medium-size: 14px; --ds-body-01-medium-line-height: 20px; --ds-body-01-medium-weight: 500;
+  --ds-body-02-size: 13px;      --ds-body-02-line-height: 18px;    --ds-body-02-weight: 400;
+  --ds-body-02-medium-size: 13px; --ds-body-02-medium-line-height: 18px; --ds-body-02-medium-weight: 500;
+  --ds-utility-01-size: 12px;   --ds-utility-01-line-height: 16px; --ds-utility-01-weight: 500;
+  --ds-utility-02-size: 11px;   --ds-utility-02-line-height: 14px; --ds-utility-02-weight: 500;
+}
+
+.ds-heading-01 { font-family: var(--ds-font-ui); font-size: var(--ds-heading-01-size); line-height: var(--ds-heading-01-line-height); font-weight: var(--ds-heading-01-weight); }
+.ds-heading-02 { font-family: var(--ds-font-ui); font-size: var(--ds-heading-02-size); line-height: var(--ds-heading-02-line-height); font-weight: var(--ds-heading-02-weight); }
+.ds-heading-03 { font-family: var(--ds-font-ui); font-size: var(--ds-heading-03-size); line-height: var(--ds-heading-03-line-height); font-weight: var(--ds-heading-03-weight); }
+.ds-body-01 { font-family: var(--ds-font-ui); font-size: var(--ds-body-01-size); line-height: var(--ds-body-01-line-height); font-weight: var(--ds-body-01-weight); }
+.ds-body-01-medium { font-family: var(--ds-font-ui); font-size: var(--ds-body-01-medium-size); line-height: var(--ds-body-01-medium-line-height); font-weight: var(--ds-body-01-medium-weight); }
+.ds-body-02 { font-family: var(--ds-font-ui); font-size: var(--ds-body-02-size); line-height: var(--ds-body-02-line-height); font-weight: var(--ds-body-02-weight); }
+.ds-body-02-medium { font-family: var(--ds-font-ui); font-size: var(--ds-body-02-medium-size); line-height: var(--ds-body-02-medium-line-height); font-weight: var(--ds-body-02-medium-weight); }
+.ds-utility-01 { font-family: var(--ds-font-ui); font-size: var(--ds-utility-01-size); line-height: var(--ds-utility-01-line-height); font-weight: var(--ds-utility-01-weight); }
+.ds-utility-02 { font-family: var(--ds-font-ui); font-size: var(--ds-utility-02-size); line-height: var(--ds-utility-02-line-height); font-weight: var(--ds-utility-02-weight); }
+
+.ds-font-mono { font-family: var(--ds-font-mono); }

@@ -1,0 +1,56 @@
+/**
+ * Design System — Dimension tokens
+ *
+ * Implements DESIGN_SYSTEM.md §2.4 (2px-base dimension scale), §2.8
+ * (control heights), §2.9 (icon sizes), v0.1.3.
+ *
+ * These are named by their own literal pixel value (--ds-dimension-8 = 8px),
+ * not by the legacy --space-xN half-value convention hru.css uses — this is
+ * a separate, additive token set living alongside the old one, not a rename
+ * of it.
+ *
+ * Icon sizes and control heights are each their own locked scale, not a
+ * subset of the dimension scale (icons need 24/48, controls need 28/36 —
+ * neither is in the core 14-step list). All three share the 2px-base
+ * discipline without being required to share every literal value.
+ */
+
+:root {
+  /* ---- Core dimension scale — spacing and sizing, shared where appropriate ---- */
+  --ds-dimension-0: 0px;
+  --ds-dimension-2: 2px;
+  --ds-dimension-4: 4px;
+  --ds-dimension-6: 6px;
+  --ds-dimension-8: 8px;
+  --ds-dimension-10: 10px;
+  --ds-dimension-12: 12px;
+  --ds-dimension-16: 16px;
+  --ds-dimension-20: 20px;
+  --ds-dimension-24: 24px;
+  --ds-dimension-32: 32px;
+  --ds-dimension-40: 40px;
+  --ds-dimension-48: 48px;
+  --ds-dimension-64: 64px;
+
+  /* ---- Control heights (§2.8, revised v0.2.0) — default is md unless a
+     specific reason points elsewhere. Raised 4px across the tier (was
+     28/32/36) — md's old 32px left a labeled AppInput's floated label and
+     value text with zero spare pixels (see AppInput.vue's own size-block
+     comment for the exact math this forced), and a prepend/append icon
+     read as cramped against the field border at every size. Same 4px
+     cadence preserved, not a new scale shape. */
+  --ds-control-sm: 32px;
+  --ds-control-md: 36px;
+  --ds-control-lg: 40px;
+
+  /* ---- Icon sizes (§2.9) — finalized, 14px kept as a permanent step ---- */
+  --ds-icon-12: 12px;
+  --ds-icon-14: 14px;
+  --ds-icon-16: 16px;
+  --ds-icon-20: 20px;
+  --ds-icon-24: 24px;
+  --ds-icon-32: 32px;
+  --ds-icon-40: 40px;
+  --ds-icon-48: 48px;
+  --ds-icon-64: 64px;
+}

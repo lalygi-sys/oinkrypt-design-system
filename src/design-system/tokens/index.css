@@ -1,0 +1,15 @@
+/**
+ * Design System — token entry point.
+ *
+ * Imports every token file. Importing this file anywhere only defines new
+ * ds-prefixed CSS custom properties and a handful of ds-prefixed typography
+ * classes — it does not touch, override, or remove anything in
+ * ../../css/hru.css or quasar.variables.scss, and applies no visual change
+ * on its own until something actually references one of those tokens.
+ */
+
+@import './colors.css';
+@import './dimensions.css';
+@import './radius.css';
+@import './typography.css';
+@import './motion.css';
